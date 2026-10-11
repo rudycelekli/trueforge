@@ -233,8 +233,10 @@ interface McpAuthRequiredEvent {
 Tool approval and tool response replies come back through `createTurn` as a
 `user.tool_approval` or `user.tool_response`
 [input item](/ui-sdk/setup-custom-servers/server-contract#turn-input), carrying the same
-`toolCallId`. After MCP authorization, Continue instead sends
-`{ type: "user.mcp_auth_continue" }`; that input has no `toolCallId`.
+`toolCallId`. MCP authorization continuation is represented by
+`user.mcp_auth_continue` in the UI input contract, with no `toolCallId`. The current
+runtime's Continue action resumes through `createTurn` with an empty input array;
+see [Turn input](/ui-sdk/setup-custom-servers/server-contract#turn-input).
 
 ## Sub-agents
 

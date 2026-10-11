@@ -190,7 +190,7 @@ interface UserMcpAuthContinueEvent {
 
 A plain chat message arrives as `user.message`. Approving or rejecting a tool call, answering a prompt the agent raised, and continuing after MCP authorization arrive as the other three — all four through the same `createTurn` entry point, so branch on `type`.
 
-After an `mcp.auth_required` event, the user completes authorization and presses Continue. The UI sends `{ type: "user.mcp_auth_continue" }` to resume that paused turn; it does not invent a tool response or a new user message. See [MCP OAuth](/ui-sdk/setup-custom-ui/mcp-oauth).
+`user.mcp_auth_continue` represents an MCP authorization continuation in the UI contract and session history. The current runtime's Continue action calls `createTurn` with `input: []` and the previous-turn anchor instead; custom servers must handle that empty-input resume after a paused MCP authorization turn. The built-in TrueForge adapter does not forward the continuation marker as a wire input. See [MCP OAuth](/ui-sdk/setup-custom-ui/mcp-oauth).
 
 ## Turn state
 
