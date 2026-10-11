@@ -230,9 +230,11 @@ interface McpAuthRequiredEvent {
   `requiredActions` is paused, not complete.
 </Note>
 
-The user's reply comes back through `createTurn` as a `user.tool_approval` or
-`user.tool_response` [input item](/ui-sdk/setup-custom-servers/server-contract#turn-input), carrying the same
-`toolCallId`.
+Tool approval and tool response replies come back through `createTurn` as a
+`user.tool_approval` or `user.tool_response`
+[input item](/ui-sdk/setup-custom-servers/server-contract#turn-input), carrying the same
+`toolCallId`. After MCP authorization, Continue instead sends
+`{ type: "user.mcp_auth_continue" }`; that input has no `toolCallId`.
 
 ## Sub-agents
 

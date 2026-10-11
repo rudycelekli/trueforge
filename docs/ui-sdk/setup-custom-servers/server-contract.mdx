@@ -156,7 +156,11 @@ async listSessions({ pageToken, limit = 20 } = {}) {
 What the UI sends into `createTurn`:
 
 ```ts
-type TurnInputItem = UserMessage | UserToolApprovalEvent | UserToolResponseEvent;
+type TurnInputItem =
+  | UserMessage
+  | UserToolApprovalEvent
+  | UserToolResponseEvent
+  | UserMcpAuthContinueEvent;
 
 interface UserMessage {
   type: "user.message";
@@ -178,7 +182,15 @@ interface UserToolResponseEvent {
 }
 ```
 
-A plain chat message arrives as `user.message`. Approving or rejecting a tool call, and answering a prompt the agent raised, arrive as the other two — all three through the same `createTurn` entry point, so branch on `type`.
+```ts
+interface UserMcpAuthContinueEvent {
+  type: "user.mcp_auth_continue";
+}
+```
+
+A plain chat message arrives as `user.message`. Approving or rejecting a tool call, answering a prompt the agent raised, and continuing after MCP authorization arrive as the other three — all four through the same `createTurn` entry point, so branch on `type`.
+
+After an `mcp.auth_required` event, the user completes authorization and presses Continue. The UI sends `{ type: "user.mcp_auth_continue" }` to resume that paused turn; it does not invent a tool response or a new user message. See [MCP OAuth](/ui-sdk/setup-custom-ui/mcp-oauth).
 
 ## Turn state
 
